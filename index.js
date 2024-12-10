@@ -40,6 +40,28 @@ app.get("/api/persons", (request, response) => {
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
+  if (!body.name) {
+    return response.status(400).json({
+      error: "name is required",
+    });
+  }
+
+  if (!body.number) {
+    return response.status(400).json({
+      error: "number is required",
+    });
+  }
+
+  if (
+    persons.find(
+      (person) => person.name.toLowerCase() === body.name.toLowerCase()
+    )
+  ) {
+    return response.status(400).json({
+      error: "name must be unique",
+    });
+  }
+
   const person = {
     id: String(Math.floor(Math.random() * 99999)),
     name: body.name,
