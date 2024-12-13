@@ -4,6 +4,7 @@ const app = express();
 const morgan = require("morgan");
 require("dotenv").config();
 const Person = require("./models/person");
+const person = require("./models/person");
 
 morgan.token("post-body", function (req, res) {
   return req.method === "POST" ? JSON.stringify(req.body) : "";
@@ -52,16 +53,6 @@ app.post("/api/persons", (request, response, next) => {
     });
   }
 
-  // if (
-  //   persons.find(
-  //     (person) => person.name.toLowerCase() === body.name.toLowerCase()
-  //   )
-  // ) {
-  //   return response.status(400).json({
-  //     error: "name must be unique",
-  //   });
-  // }
-
   const person = new Person({
     name: body.name,
     number: body.number,
@@ -84,6 +75,21 @@ app.get("/api/persons/:id", (request, response, next) => {
       } else {
         response.status(404).end();
       }
+    })
+    .catch((error) => next(error));
+});
+
+app.put("/api/persons/:id", (request, response, next) => {
+  const person = {
+    name: request.body.name,
+    number: request.body.number,
+  };
+
+  Person.findByIdAndUpdate(request.params.id, person, {
+    new: true,
+  })
+    .then((updatedPerson) => {
+      response.json(updatedPerson);
     })
     .catch((error) => next(error));
 });
