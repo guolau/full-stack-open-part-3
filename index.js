@@ -69,9 +69,9 @@ app.post("/api/persons", (request, response) => {
 });
 
 app.get("/api/persons/:id", (request, response) => {
-  Person.find({ _id: request.params.id }).then((person) => {
+  Person.findById(request.params.id).then((person) => {
     console.log(person);
-    if (person[0]) {
+    if (person) {
       response.json(person);
     } else {
       response.status(404).end();
@@ -80,9 +80,10 @@ app.get("/api/persons/:id", (request, response) => {
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  persons = persons.filter((person) => person.id !== request.params.id);
-
-  response.status(204).end();
+  console.log(request.params);
+  Person.findByIdAndDelete(request.params.id).then((result) => {
+    response.status(204).end();
+  });
 });
 
 const PORT = process.env.PORT;
