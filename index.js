@@ -69,7 +69,6 @@ app.post("/api/persons", (request, response, next) => {
 app.get("/api/persons/:id", (request, response, next) => {
   Person.findById(request.params.id)
     .then((person) => {
-      console.log(person);
       if (person) {
         response.json(person);
       } else {
@@ -95,7 +94,6 @@ app.put("/api/persons/:id", (request, response, next) => {
 });
 
 app.delete("/api/persons/:id", (request, response, next) => {
-  console.log(request.params);
   Person.findByIdAndDelete(request.params.id)
     .then((result) => {
       response.status(204).end();
