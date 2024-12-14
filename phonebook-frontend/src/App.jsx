@@ -43,10 +43,14 @@ const App = () => {
             setFilterKeyword('');        
           })
           .catch(error => {
-            showNotification(
-              `Contact ${existingPerson.name} has already been removed`,
-              NOTIFICATION_TYPE.error
-            );
+            if (error.response.data.error ?? false) {
+              showNotification(error.response.data.error, NOTIFICATION_TYPE.error);
+            } else {
+              showNotification(
+                `Contact ${existingPerson.name} has already been removed`,
+                NOTIFICATION_TYPE.error
+              );
+            }
           });
       }
     }
@@ -61,6 +65,9 @@ const App = () => {
           setNewName('');
           setNewNumber('');
           setFilterKeyword('');        
+        })
+        .catch(error => {
+          showNotification(error.response.data.error, NOTIFICATION_TYPE.error);
         });
     }  
   }
