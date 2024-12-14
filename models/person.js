@@ -10,7 +10,17 @@ const personSchema = new mongoose.Schema({
     minLength: 3,
     required: true,
   },
-  number: String,
+  number: {
+    type: String,
+    minLength: 8,
+    required: true,
+    validate: {
+      validator: (value) => {
+        return new RegExp("^\\d{2,3}-\\d*").test(value);
+      },
+      message: (props) => `Phone number is formatted incorrectly.`,
+    },
+  },
 });
 
 personSchema.set("toJSON", {
