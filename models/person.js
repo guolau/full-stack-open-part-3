@@ -18,7 +18,7 @@ const personSchema = new mongoose.Schema({
       validator: (value) => {
         return new RegExp("^\\d{2,3}-\\d*").test(value);
       },
-      message: (props) => `Phone number is formatted incorrectly.`,
+      message: () => `Phone number is formatted incorrectly.`,
     },
   },
 });
